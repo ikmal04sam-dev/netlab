@@ -1,0 +1,4 @@
+PROBLEM: h2 and h1 both use 10.61.0.1
+PROBLEM: h2 and h1 both use fd00:1761::1
+PROBLEM: Link refers to unknown device 's9'
+Fix the description and try again.

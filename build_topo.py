@@ -57,23 +57,41 @@ def check(spec):
     Week 2 task: report any IP address that is used by more than one host.
     """
     problems = []
-    seen = {}  # Maps address (without prefix) -> host name
+    seen = {}
+
+    # 1. Collect valid device names (switches + hosts)
+    valid_devices = set()
+
+    for switch in spec.get("switches", []):
+        if isinstance(switch, dict) and "name" in switch:
+            valid_devices.add(switch["name"])
+        elif isinstance(switch, str):
+            valid_devices.add(switch)
 
     for host in spec.get("hosts", []):
-        name = host.get("name")
-        # Check both IPv4 and IPv6 addresses
-        for key in ["ip", "ipv6"]:
-            if key in host and host[key]:
-                # Strip prefix length (everything from '/')
-                addr = host[key].split("/")[0]
-                
-                if addr in seen:
-                    problems.append(f"{name} and {seen[addr]} both use {addr}")
-                else:
-                    seen[addr] = name
+        if isinstance(host, dict) and "name" in host:
+            host_name = host["name"]
+            valid_devices.add(host_name)
+            
+            # Check duplicate IP addresses
+            for key in ["ip", "ipv6"]:
+                if key in host and host[key]:
+                    addr = host[key].split("/")[0]
+                    if addr in seen:
+                        problems.append(f"{host_name} and {seen[addr]} both use {addr}")
+                    else:
+                        seen[addr] = host_name
+
+    # 2. Check that every link refers to valid devices
+    for link in spec.get("links", []):
+        if len(link) == 2:
+            dev1, dev2 = link[0], link[1]
+            if dev1 not in valid_devices:
+                problems.append(f"Link refers to unknown device '{dev1}'")
+            if dev2 not in valid_devices:
+                problems.append(f"Link refers to unknown device '{dev2}'")
 
     return problems
-
 
 def build(spec):
     """Turn the description into a Mininet network: switches, then hosts, then links."""
