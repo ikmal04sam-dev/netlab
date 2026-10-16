@@ -57,7 +57,21 @@ def check(spec):
     Week 2 task: report any IP address that is used by more than one host.
     """
     problems = []
-    # TODO: your code here
+    seen = {}  # Maps address (without prefix) -> host name
+
+    for host in spec.get("hosts", []):
+        name = host.get("name")
+        # Check both IPv4 and IPv6 addresses
+        for key in ["ip", "ipv6"]:
+            if key in host and host[key]:
+                # Strip prefix length (everything from '/')
+                addr = host[key].split("/")[0]
+                
+                if addr in seen:
+                    problems.append(f"{name} and {seen[addr]} both use {addr}")
+                else:
+                    seen[addr] = name
+
     return problems
 
 
