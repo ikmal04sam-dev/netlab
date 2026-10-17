@@ -8,28 +8,28 @@ repository: https://github.com/ikmal04sam-dev/netlab
 answers:
   planes:
     question: "Where are the data, control and management planes in your network?"
-    answer: "The data plane resides inside the Linux kernel on the bridge interfaces (s1, s2, s3), which forward frames between host virtual interfaces. The control plane runs inside the Linux bridge module using standard MAC address learning and flooding algorithms (no SDN controller is attached). The management plane consists of build_topo.py, make_page.py, and Mininet, which configure, control, and inspect the network programmatically."
+    answer: "The data plane is inside the Linux kernel on the bridges (s1, s2, s3) forwarding network frames. The control plane runs standard bridge learning algorithms inside the kernel to build forwarding tables. The management plane consists of build_topo.py, make_page.py, and Mininet, which build and test the network."
 
   learning:
     question: "How did your switches learn which port leads to each host? Use your MAC table evidence."
-    answer: "The Linux bridge switches learned MAC locations dynamically through data-plane flooding and source MAC address learning. As shown in macs.txt (from 'brctl showmacs s1'), when host h1 sent ARP/ND traffic, s1 inspected the source MAC address on the incoming port, recorded it in its forwarding table, and marked it as non-local ('is local? no'). Port numbers are assigned sequentially based on the link creation order in topology.yaml."
+    answer: "Switches learned MAC locations automatically by inspecting incoming frames. As shown in macs.txt from 'brctl showmacs s1', when a host sends traffic, the switch records its source MAC address alongside the port it arrived on."
 
   kind:
     question: "Which of the four kinds of programmability is this assignment (a network described as data, then built and documented by scripts)? Why isn't it any of the other three?"
-    answer: "This assignment uses Declarative / Data-driven Network Automation (Infrastructure as Code). It defines the desired end-state of the network in data (topology.yaml) and uses scripts to instantiate and document it. It is not On-box Scripting because execution occurs externally to build the environment; it is not Device APIs (NETCONF/RESTCONF) because it creates virtual network interfaces directly via Mininet/Linux primitives rather than querying remote device APIs; and it is not Control Plane SDN (OpenFlow) because switches use built-in standard bridge learning rather than external controller rules."
+    answer: "This is Declarative / Data-driven Automation because the topology is defined in a data file (topology.yaml) and built by scripts. It isn't On-box Scripting because scripts run externally; it isn't Device APIs because it doesn't query NETCONF/RESTCONF; and it isn't Control Plane SDN because it doesn't use an external controller like OpenFlow."
 
   two_am:
     question: "Week 1's 2 a.m. change on 40 switches: what would be different if those switches were described like your network?"
-    answer: "Instead of manually logging into 40 switches via SSH to execute individual CLI commands (which is slow, error-prone, and hard to revert), you would update a central topology/configuration file in Git. Continuous integration (CI) tests would run check() automatically to validate syntax and IP allocation. Once approved, an automated script would push the change consistently across all 40 switches simultaneously, complete with audit tracking and instant rollback via Git."
+    answer: "Instead of manually typing CLI commands on 40 individual switches, you would edit one central YAML file in Git. Automated scripts would validate the changes with check() and deploy them across all switches at once, allowing easy rollbacks if needed."
 
   model:
     question: "What's the difference between your network's data model and its serialisation? Use YAML and JSON as the example."
-    answer: "The data model is the abstract structure and schema representing network objects and their relationships (e.g., switches as lists, hosts with IP properties, links as host-switch pairs). Serialization is the specific text representation used to store or transmit that model. YAML and JSON represent the exact same underlying data model, but YAML uses indentation and human-friendly syntax, while JSON uses brackets, braces, and quotation marks."
+    answer: "The data model is the logical structure representing devices and links. Serialization is how that structure is written down in text. YAML and JSON hold the exact same data model, but YAML uses clean indentation while JSON uses brackets and braces."
 
   check:
     question: "Why is it better to catch bad data in check() than with pingall? What did IPv6 notice about a duplicate address that IPv4 didn't?"
-    answer: "Catching bad data in check() provides static validation before deployment, preventing broken network states, silent failures, and downtime in production. pingall only tests basic IPv4 reachability after deployment and can miss subtle issues. IPv6 automatically detected duplicate IP addresses using Duplicate Address Detection (DAD) via ICMPv6 Neighbor Solicitation and flagged the address as 'dadfailed', whereas IPv4 quietly accepted duplicate IPs and caused unpredictable ARP routing failures without raising an explicit error."
+    answer: "check() catches errors before building the network, preventing unexpected behavior in production. pingall only tests basic connectivity after startup. IPv6 automatically flagged duplicate IPs as 'dadfailed' using Duplicate Address Detection (DAD), whereas IPv4 silently accepted duplicate IPs and broke traffic routing without an explicit error."
 
   git:
     question: "What does your Git history give you that copying files into folders named topology-v2-final wouldn't?"
-    answer: "Git provides precise line-by-line diff tracking (git diff), exact commit timestamps, author attribution, atomic rollbacks (git revert), branching for safe feature testing, and a complete chronological record of 'why' a change was made through commit messages. Folder-based copying creates messy redudancy, lacks diff visibility, risk manual file overwrites, and provides no audit trail."
+    answer: "Git tracks exact line-by-line changes (git diff), records who made updates and when, and allows instant rollbacks with 'git revert'. Copying folders creates duplicate files, clutter, and no clear history of changes."
