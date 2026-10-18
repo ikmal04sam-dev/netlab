@@ -15,7 +15,7 @@
 </head>
 <body>
 <h1>My network, built from data</h1>
-<p class="meta">Student ID ending 1761 · generated from <code>topology.yaml</code> by <code>make_page.py</code> on 2026-10-17</p>
+<p class="meta">Student ID ending 1761 · generated from <code>topology.yaml</code> by <code>make_page.py</code> on 2026-10-18</p>
 <p id="summary">3 switches, 6 hosts and 8 links, on IPv4 <code>10.61.0.0/16</code> and IPv6 <code>fd00:1761::/32</code>.
 The same file builds this network in Mininet and generates this page.</p>
 <p>Repository: <a id="repository" href="https://github.com/ikmal04sam-dev/netlab">https://github.com/ikmal04sam-dev/netlab</a></p>
@@ -28,12 +28,12 @@ The same file builds this network in Mininet and generates this page.</p>
 <pre class="mermaid" id="diagram">graph LR
   s1 --- s2
   s2 --- s3
-  h1[&quot;h1&lt;br&gt;10.61.0.1&quot;] --- s1
-  h2[&quot;h2&lt;br&gt;10.61.0.2&quot;] --- s1
-  h3[&quot;h3&lt;br&gt;10.61.0.3&quot;] --- s2
-  h4[&quot;h4&lt;br&gt;10.61.0.4&quot;] --- s2
-  h5[&quot;h5&lt;br&gt;10.61.0.5&quot;] --- s3
-  h6[&quot;h6&lt;br&gt;10.61.0.6&quot;] --- s3</pre>
+  h1[&quot;h1&lt;br&gt;10.61.0.1&lt;br&gt;fd00:1761::1&quot;] --- s1
+  h2[&quot;h2&lt;br&gt;10.61.0.2&lt;br&gt;fd00:1761::2&quot;] --- s1
+  h3[&quot;h3&lt;br&gt;10.61.0.3&lt;br&gt;fd00:1761::3&quot;] --- s2
+  h4[&quot;h4&lt;br&gt;10.61.0.4&lt;br&gt;fd00:1761::4&quot;] --- s2
+  h5[&quot;h5&lt;br&gt;10.61.0.5&lt;br&gt;fd00:1761::5&quot;] --- s3
+  h6[&quot;h6&lt;br&gt;10.61.0.6&lt;br&gt;fd00:1761::6&quot;] --- s3</pre>
 
 <h2>Evidence from the running network</h2>
 <section id="evidence"><h3>pingall: every host reaches every other</h3>

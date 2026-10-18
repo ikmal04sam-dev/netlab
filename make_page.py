@@ -85,19 +85,33 @@ def mermaid_diagram(spec):
     """
     # Build a lookup mapping host name to its IPv4 address (without prefix)
     # Lookup host IPv4 addresses (without prefix length)
-    host_ips = {}
+    """Return Mermaid text drawing the network topology with IPv4 and IPv6 host labels."""
+    # Look up host IPv4 and IPv6 addresses
+    host_addrs = {}
     for host in spec.get("hosts", []):
         if isinstance(host, dict) and "name" in host:
-            ip = host.get("ip", "").split("/")[0]
-            host_ips[host["name"]] = ip
+            ipv4 = host.get("ip", "").split("/")[0]
+            ipv6 = host.get("ipv6", "").split("/")[0]
+            host_addrs[host["name"]] = {"ipv4": ipv4, "ipv6": ipv6}
 
-    # Helper function to format nodes with clean IPv4 labels
+    # Format nodes with clean IPv4 and IPv6 labels
     def format_node(node_name):
-        if node_name in host_ips and host_ips[node_name]:
-            return f'{node_name}["{node_name}<br>{host_ips[node_name]}"]'
+        if node_name in host_addrs:
+            v4 = host_addrs[node_name].get("ipv4", "")
+            v6 = host_addrs[node_name].get("ipv6", "")
+            
+            # Format label with both IP versions if available
+            label_parts = [node_name]
+            if v4:
+                label_parts.append(v4)
+            if v6:
+                label_parts.append(v6)
+                
+            label = "<br>".join(label_parts)
+            return f'{node_name}["{label}"]'
         return node_name
 
-    # Group links into host-switch and switch-switch
+    # Separate switch-to-switch links from host links to keep the layout organized
     switches = {s if isinstance(s, str) else s.get("name") for s in spec.get("switches", [])}
     switch_links = []
     host_links = []
@@ -112,11 +126,11 @@ def mermaid_diagram(spec):
 
     lines = ["graph LR"]
 
-    # Align switches horizontally in a clean main chain
+    # Main switch interconnects
     for s1, s2 in switch_links:
         lines.append(f"  {s1} --- {s2}")
 
-    # Attach hosts directly to switches with straight connections
+    # Host connections
     for dev1, dev2 in host_links:
         f_dev1 = format_node(dev1)
         f_dev2 = format_node(dev2)
