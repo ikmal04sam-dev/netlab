@@ -1,0 +1,22 @@
+# page3.yaml: the words on your Week 3 page. make_page3.py puts each answer under its question.
+# A few sentences each, in your own words, about YOUR network and YOUR evidence.
+# Leave a blank line between paragraphs. Never put your name or full student ID here.
+
+repository: https://github.com/YOUR-USERNAME/YOUR-REPOSITORY
+
+answers:
+  design:
+    question: "Describe your design: why these routers, LANs and links, and how you chose the addresses."
+    answer: "The network consists of 4 routers (r1–r4) arranged in a ring topology with 4 attached LANs (lan-h1 to lan-h4). The ring structure (r1–r2, r2–r3, r3–r4, r4–r1) provides physical link redundancy so any router pair has alternative physical paths. Addressing follows the student ID block 10.61.0.0/16: LAN networks use /24 subnets (10.61.1.0/24, 10.61.32.0/24, 10.61.33.0/24, 10.61.34.0/24), while point-to-point links use /30 subnets (10.61.12.0/30, 10.61.23.0/30, 10.61.43.0/30, 10.61.14.0/30) where the first named router takes .1 and the second takes .2."
+
+  summary:
+    question: "Which route summarises several LANs? Which networks does it cover, why is it correct, and what else would it attract if you added a network inside its range?"
+    answer: "The summary route configured on r1 is 10.61.32.0/20 via 10.61.12.2. It covers the IP range 10.61.32.0 to 10.61.47.255, encompassing both lan-h2 (10.61.32.0/24) and lan-h3 (10.61.33.0/24). It is correct because both target networks share the common 20-bit prefix 10.61.32.0/20 and are reachable through r2. If a new LAN within 10.61.34.0–10.61.47.255 were added elsewhere in the topology, r1 would automatically attract its traffic due to matching the summary route, leading to potential black-holing unless a more specific /24 route is present."
+
+  failure:
+    question: "When you took a link down, what happened, and why couldn't your routes recover even though another path existed? What would have recovered?"
+    answer: "When the r1–r4 link went down, traffic sent from h1 to h4 failed because static routes on r1 explicitly forced 10.61.34.0/24 out via 10.61.14.1. Static routes are fixed entries in the forwarding table and cannot dynamically sense link failures or compute alternate routes. Although a physical backup path existed through r2 and r3, recovery required manual static route updates. A dynamic control plane protocol (such as OSPF or BGP) would have automatically detected the interface failure, withdrawn the link state, and re-routed traffic via r2 and r3."
+
+  control_plane:
+    question: "In your network, what was the control plane? Who worked out the routes, and what does that mean for a network of 40 routers?"
+    answer: "In this network, I functioned as the manual control plane by computing static routes offline and writing them into network.yaml. For a small 4-router network, static route definition allows complete route path validation via pre-checks like check_paths(). However, in a network of 40 routers with hundreds of links, manual static routing quickly becomes unmaintainable, error-prone to loops/black-holes, and incapable of providing automatic failover during unexpected link drops. A dynamic, automated control plane protocol is essential at scale."
