@@ -1,0 +1,6 @@
+10.61.32.10 via 10.61.12.2 dev r1-eth1 src 10.61.12.1 uid 0 
+    cache 
+10.61.33.10 via 10.61.12.2 dev r1-eth1 src 10.61.12.1 uid 0 
+    cache 
+10.61.34.10 via 10.61.14.1 dev r1-eth2 src 10.61.14.2 uid 0 
+    cache 
