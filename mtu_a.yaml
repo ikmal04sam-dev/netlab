@@ -39,7 +39,7 @@ tenants:
   - name: beta
     vni: 220
     network: 10.61.20.0/24 # the same addresses as alpha, on purpose
-    mtu: 1500
+    mtu: 1450
     vms:
       - [beta1, hv2]
       - [beta2, hv3]

@@ -1,0 +1,24 @@
+PING 10.61.20.11 (10.61.20.11) 56(84) bytes of data.
+64 bytes from 10.61.20.11: icmp_seq=1 ttl=64 time=0.231 ms
+64 bytes from 10.61.20.11: icmp_seq=2 ttl=64 time=0.101 ms
+64 bytes from 10.61.20.11: icmp_seq=3 ttl=64 time=0.101 ms
+
+--- 10.61.20.11 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2009ms
+rtt min/avg/max/mdev = 0.101/0.144/0.231/0.061 ms
+10.61.20.11 dev alpha1-eth0 lladdr 02:00:00:6e:00:0b REACHABLE 
+== captured on beta2 meanwhile
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on beta2-eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+
+0 packets captured
+0 packets received by filter
+0 packets dropped by kernel
+PING 10.61.20.11 (10.61.20.11) 56(84) bytes of data.
+64 bytes from 10.61.20.11: icmp_seq=1 ttl=64 time=0.517 ms
+64 bytes from 10.61.20.11: icmp_seq=2 ttl=64 time=0.216 ms
+
+--- 10.61.20.11 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1001ms
+rtt min/avg/max/mdev = 0.216/0.366/0.517/0.150 ms
+10.61.20.11 dev beta1-eth0 lladdr 02:00:00:dc:00:0b REACHABLE 
