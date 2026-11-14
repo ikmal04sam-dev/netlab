@@ -1,0 +1,3 @@
+PROBLEM: tenant alpha (VNI 110): packet 1500 + 50 VXLAN = 1550 B exceeds underlay MTU 1500 B by 50 B
+PROBLEM: tenant beta (VNI 220): packet 1500 + 50 VXLAN = 1550 B exceeds underlay MTU 1500 B by 50 B
+Fix the design and try again: nothing was built.

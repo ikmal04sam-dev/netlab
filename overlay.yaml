@@ -31,7 +31,7 @@ tenants:
   - name: alpha
     vni: 110
     network: 10.61.20.0/24
-    mtu: 1500 # the largest IP packet this tenant's VMs send
+    mtu: 1450 # the largest IP packet this tenant's VMs send
     vms: # [VM name, the hypervisor it runs on]
       - [alpha1, hv1]
       - [alpha2, hv2]
