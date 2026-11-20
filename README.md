@@ -15,3 +15,10 @@ Choice for a Campus Network: Secure Mode
 Trade-offs & Costs:
 Secure Mode: If the control channel disconnects, the switch drops all packets that lack matching explicit flows rather than failing open. While this risks a network outage if the controller goes down, it guarantees that centralized policies—such as firewall rules, VLAN isolation, and security controls—remain strictly enforced.
 Cost of Standalone Mode: In standalone mode, losing the controller causes the switch to fall back to acting like a traditional L2 learning switch. While this maintains basic connectivity, the "cost" is a complete loss of control and security policies: high-priority firewall rules, custom paths, and access controls are bypassed, exposing the campus network to unauthorized traffic and broadcast storms.
+## AI use Week 6
+
+| NO. | ITEM | USAGE |
+| :--- | :--- | :--- |
+| 1 | Data Centre Overlay Design (`overlay.yaml` & `mtu_*.yaml`) | Used AI to verify the YAML configuration structure for overlapping tenant networks, custom student ID IP/MAC addressing, and the two MTU remediation designs (lowering tenant MTU to 1450 vs. enabling 9000-byte jumbo frames on the underlay). |
+| 2 | VTEP & MTU Validation Logic (`build_overlay.py`) | Used AI to debug and refine `tenant_commands()` for generating Linux bridge, VXLAN, and flood FDB entries across hypervisors, as well as implementing `check_mtu()` to catch the 50-byte VXLAN encapsulation overhead before deployment. |
+| 3 | Overlay Analysis & Evaluation (`page6.yaml`) | Used AI to clarify flood-and-learn MAC learning behavior, trace the byte-level mechanics of the MTU black hole, and structure the evaluation answers for the generated Week 6 web page. |
